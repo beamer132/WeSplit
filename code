@@ -1,5 +1,12 @@
 //
 //  ContentView.swift
+//  Shared
+//
+//  Created by BC on 08/10/2021.
+//
+
+//
+//  ContentView.swift
 //  WeSplit
 //
 //  Created by Benji on 08/10/2021.
@@ -12,13 +19,27 @@ struct ContentView: View {
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 2
     let tipPercentages = [10, 15, 20, 25, 0]
+    
     var totalPerPerson: Double {
         let peopleCount = Double(numberOfPeople + 2)
-        return 0
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkAmount) ?? 0
+        let tipValue = orderAmount / 100 * tipSelection
+        let grandTotal = orderAmount + tipValue
+        let amountPerPerson = grandTotal / peopleCount
+        
+        return amountPerPerson
     }
     
-    
-    
+    var totalBillWithTip: Double {
+        let peopleCount = Double(numberOfPeople + 2)
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkAmount) ?? 0
+        let tipValue = orderAmount / 100 * tipSelection
+        let grandTotal = orderAmount + tipValue
+        
+        return grandTotal
+    }
     
     
     var body: some View {
@@ -34,6 +55,7 @@ struct ContentView: View {
                     }
                 }
             }
+                
                 Section(header: Text ("tip percentage")) {
                     Picker("Tip percentage", selection: $tipPercentage) {
                         ForEach(0 ..< tipPercentages.count) {
@@ -42,8 +64,11 @@ struct ContentView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
-                Section {
-                Text("$\(checkAmount)")
+                Section(header: Text ("Total including Tip")){
+                    Text("£\(totalBillWithTip)")
+                }
+                Section(header: Text ("Amount Per Person")) {
+                Text("£\(totalPerPerson)")
             }
             }
         }
@@ -55,3 +80,5 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
